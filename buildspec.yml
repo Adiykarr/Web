@@ -11,7 +11,6 @@ phases:
     commands:
       - echo "Building the website..."
       - mkdir -p /var/www/html
-      - cp index.html /var/www/html/
 
   post_build:
     commands:
