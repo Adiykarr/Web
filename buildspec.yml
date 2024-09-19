@@ -1,0 +1,30 @@
+version: 0.2.0
+
+phases:
+  install:
+    commands:
+      - echo "Installing dependencies..."
+      - apt-get update -y
+      - apt-get install -y apache2
+
+  build:
+    commands:
+      - echo "Building the website..."
+      - mkdir -p /var/www/html
+      - cp index.html /var/www/html/
+
+  post_build:
+    commands:
+      - echo "Configuring Apache..."
+      - chown -R www-data:www-data /var/www/html
+      - chmod -R 755 /var/www/html
+      - service apache2 start
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: /var/www/html
+
+cache:
+  paths:
+    - /var/www/html/*
