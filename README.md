@@ -1,15 +1,33 @@
-# Ram Hemareddy AWS CICD Pipeline Code Deployment to AWS EC2 Instance
+# https://www.youtube.com/watch?v=531i-n5FMRY&t=985s << this project is for n virginia region
 
+#!/bin/bash
 
-<b>User Data for Dependencies installations for AMAZON Linux 2:-</b>
+# Update the system
+echo "Updating the system..."
+sudo yum update -y
 
-#!/bin/bash<br />
-sudo yum -y update<br />
-sudo yum -y install ruby<br />
-sudo yum -y install wget<br />
-cd /home/ec2-user<br />
-wget https://aws-codedeploy-ap-south-1.s3.ap-south-1.amazonaws.com/latest/install<br />
-sudo chmod +x ./install<br />
-sudo ./install auto<br />
-sudo yum install -y python-pip<br />
-sudo pip install awscli<br />
+# Install Ruby and wget if not already installed
+echo "Installing Ruby and wget..."
+sudo yum install -y ruby
+sudo yum install -y wget
+
+# Download and install the CodeDeploy agent
+echo "Downloading and installing the CodeDeploy agent..."
+cd /home/ec2-user
+wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install
+chmod +x ./install
+sudo ./install auto
+
+# Start the CodeDeploy agent
+echo "Starting the CodeDeploy agent..."
+sudo service codedeploy-agent start
+
+# Check CodeDeploy agent status
+echo "Checking CodeDeploy agent status..."
+sudo service codedeploy-agent status
+
+# Enable CodeDeploy agent on boot
+echo "Enabling CodeDeploy agent on boot..."
+sudo systemctl enable codedeploy-agent
+
+echo "Installation and setup complete!"
