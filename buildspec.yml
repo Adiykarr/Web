@@ -1,29 +1,19 @@
-version: 0.2
+      version: 0.2
 
-phases:
-  install:
-    commands:
-      - echo "Installing dependencies..."
-      - apt-get update -y
-      - apt-get install -y apache2
+      phases:
+        install:
+          commands:
+            - echo Installing NGINX
+            - sudo apt-get update
+            - sudo apt-get install nginx -y
+        build:
+          commands:
+            - echo Build started on 'date'
+            - cp index.html /var/www/html/
+        post_build:
+          commands:
+            - echo Configuring NGINX
 
-  build:
-    commands:
-      - echo "Building the website..."
-      - mkdir -p /var/www/html
-
-  post_build:
-    commands:
-      - echo "Configuring Apache..."
-      - chown -R www-data:www-data /var/www/html
-      - chmod -R 755 /var/www/html
-      - service apache2 start
-
-artifacts:
-  files:
-    - '**/*'
-  base-directory: /var/www/html
-
-cache:
-  paths:
-    - /var/www/html/*
+      artifacts:
+        files:
+          - /var/www/html/index.html
